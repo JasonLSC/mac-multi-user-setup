@@ -131,6 +131,16 @@ else
     print_warning "npm 未安装，跳过 OpenClaw 安装"
 fi
 
+# 7.5. 安装 Claude Code
+print_step "安装 Claude Code..."
+# 尝试使用 curl 安装 Claude Code CLI
+if sudo -u "$USERNAME" bash -c 'curl -fsSL https://raw.githubusercontent.com/anthropics/claude-code/main/install.sh | bash' 2>/dev/null; then
+    print_info "Claude Code 已安装"
+else
+    print_warning "Claude Code 自动安装失败，用户需要手动安装"
+    print_warning "安装方法: curl -fsSL https://raw.githubusercontent.com/anthropics/claude-code/main/install.sh | bash"
+fi
+
 # 8. 设置 Zsh 为默认 shell
 print_step "设置默认 shell..."
 chsh -s /bin/zsh "$USERNAME"
@@ -157,7 +167,86 @@ EOF
 
 chown "$USERNAME:staff" "$USER_HOME/.welcome.txt"
 
-# 10. 获取 IP 地址
+# 10. 验证安装 - Checklist
+echo ""
+echo "================================"
+echo "🔍 验证安装..."
+echo "================================"
+echo ""
+
+CHECKLIST_PASS=0
+CHECKLIST_TOTAL=0
+
+# 检查 Oh My Zsh
+CHECKLIST_TOTAL=$((CHECKLIST_TOTAL + 1))
+if [ -d "$USER_HOME/.oh-my-zsh" ]; then
+    print_info "✅ Oh My Zsh 已安装"
+    CHECKLIST_PASS=$((CHECKLIST_PASS + 1))
+else
+    print_warning "❌ Oh My Zsh 未安装"
+fi
+
+# 检查 Powerlevel10k
+CHECKLIST_TOTAL=$((CHECKLIST_TOTAL + 1))
+if [ -d "$USER_HOME/.oh-my-zsh/custom/themes/powerlevel10k" ]; then
+    print_info "✅ Powerlevel10k 主题已安装"
+    CHECKLIST_PASS=$((CHECKLIST_PASS + 1))
+else
+    print_warning "❌ Powerlevel10k 主题未安装"
+fi
+
+# 检查 Zsh 插件
+CHECKLIST_TOTAL=$((CHECKLIST_TOTAL + 1))
+if [ -d "$USER_HOME/.oh-my-zsh/custom/plugins/zsh-autosuggestions" ] && \
+   [ -d "$USER_HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting" ] && \
+   [ -d "$USER_HOME/.oh-my-zsh/custom/plugins/zsh-completions" ]; then
+    print_info "✅ Zsh 插件已安装"
+    CHECKLIST_PASS=$((CHECKLIST_PASS + 1))
+else
+    print_warning "❌ 部分 Zsh 插件未安装"
+fi
+
+# 检查配置文件
+CHECKLIST_TOTAL=$((CHECKLIST_TOTAL + 1))
+if [ -f "$USER_HOME/.zshrc" ] && [ -f "$USER_HOME/.tmux.conf" ]; then
+    print_info "✅ 配置文件已复制"
+    CHECKLIST_PASS=$((CHECKLIST_PASS + 1))
+else
+    print_warning "❌ 配置文件缺失"
+fi
+
+# 检查 tmux
+CHECKLIST_TOTAL=$((CHECKLIST_TOTAL + 1))
+if command -v tmux &> /dev/null || [ -f "/opt/homebrew/bin/tmux" ]; then
+    print_info "✅ tmux 可用"
+    CHECKLIST_PASS=$((CHECKLIST_PASS + 1))
+else
+    print_warning "❌ tmux 未安装"
+fi
+
+# 检查 Claude Code
+CHECKLIST_TOTAL=$((CHECKLIST_TOTAL + 1))
+if command -v claude &> /dev/null || [ -f "/opt/homebrew/bin/claude" ] || [ -f "$USER_HOME/.local/bin/claude" ]; then
+    print_info "✅ Claude Code 可用"
+    CHECKLIST_PASS=$((CHECKLIST_PASS + 1))
+else
+    print_warning "❌ Claude Code 未安装（需要手动安装）"
+fi
+
+# 检查代理配置
+CHECKLIST_TOTAL=$((CHECKLIST_TOTAL + 1))
+if grep -q "https_proxy" "$USER_HOME/.zshrc"; then
+    print_info "✅ 代理配置已添加"
+    CHECKLIST_PASS=$((CHECKLIST_PASS + 1))
+else
+    print_warning "❌ 代理配置缺失"
+fi
+
+echo ""
+echo "验证结果: $CHECKLIST_PASS/$CHECKLIST_TOTAL 项通过"
+echo ""
+
+# 11. 获取 IP 地址
 LOCAL_IP=$(ifconfig | grep "inet " | grep -v 127.0.0.1 | head -1 | awk '{print $2}')
 
 echo ""
