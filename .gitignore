@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Logs
+*.log
+setup.log
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# API keys (never commit!)
+*.key
+*_key.txt
+api_keys/
+
+# User-specific configs
+local_config/
