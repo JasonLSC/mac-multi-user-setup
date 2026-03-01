@@ -12,6 +12,8 @@
 - ✅ 自动安装 Claude Code
 - ✅ 预配置常用开发别名
 - ✅ 支持多用户同时运行 Claude Code
+- ✅ 远程 SSH 访问配置
+- ✅ 支持外网访问和多用户远程连接
 
 ## 快速开始
 
@@ -37,6 +39,18 @@ sudo ./scripts/create-user.sh username sk-ant-xxxxx
 ```bash
 su - username
 ```
+
+### 4. 配置远程访问（可选）
+
+```bash
+# 启用 SSH 远程访问
+sudo ./scripts/setup-ssh-access.sh
+
+# 从外网连接
+ssh -p 2222 username@your-server-ip
+```
+
+详细配置请查看：[远程访问指南](docs/remote-access.md)
 
 ## 包含的配置
 
@@ -97,12 +111,18 @@ claude
 mac-multi-user-setup/
 ├── README.md
 ├── scripts/
-│   └── create-user.sh       # 主安装脚本
+│   ├── create-user.sh           # 主安装脚本
+│   ├── batch-create-users.sh    # 批量创建用户
+│   ├── setup-ssh-access.sh      # 配置 SSH 远程访问
+│   └── setup-user-ssh-keys.sh   # 用户 SSH 密钥配置
 ├── templates/
-│   ├── .zshrc              # Zsh 配置模板
-│   └── .tmux.conf          # Tmux 配置模板
+│   ├── .zshrc                   # Zsh 配置模板
+│   └── .tmux.conf               # Tmux 配置模板
 └── docs/
-    └── troubleshooting.md  # 故障排除指南
+    ├── quick-start.md           # 快速开始指南
+    ├── remote-access.md         # 远程访问配置
+    ├── troubleshooting.md       # 故障排除指南
+    └── github-setup.md          # GitHub 部署指南
 ```
 
 ## 系统要求
