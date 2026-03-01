@@ -99,14 +99,25 @@ if [ -n "$API_KEY" ]; then
     print_info "API key 已配置"
 fi
 
-# 6. 设置 Zsh 为默认 shell
+# 6. 安装 OpenClaw（个人 AI 助手）
+print_step "安装 OpenClaw..."
+if command -v npm &> /dev/null; then
+    sudo -u "$USERNAME" npm install -g openclaw@latest 2>/dev/null || print_warning "OpenClaw 安装失败，用户可稍后手动安装"
+    if [ $? -eq 0 ]; then
+        print_info "OpenClaw 已安装"
+    fi
+else
+    print_warning "npm 未安装，跳过 OpenClaw 安装"
+fi
+
+# 7. 设置 Zsh 为默认 shell
 print_step "设置默认 shell..."
 chsh -s /bin/zsh "$USERNAME"
 print_info "已设置 Zsh 为默认 shell"
 
-# 7. 创建欢迎文件
+# 8. 创建欢迎文件
 cat > "$USER_HOME/.welcome.txt" << EOF
-欢迎使用 Mac mini Claude Code 开发环境！
+欢迎使用 Mac mini 多用户开发环境！
 
 你的账户信息：
 - 用户名: $USERNAME
@@ -116,6 +127,7 @@ cat > "$USER_HOME/.welcome.txt" << EOF
 1. 启动 tmux: tmux new -s main
 2. 配置 Claude: claude config
 3. 启动 Claude: claude
+4. 使用 OpenClaw: openclaw onboard
 
 详细使用指南请查看：新用户使用指南.md
 
@@ -140,7 +152,8 @@ if [ -n "$API_KEY" ]; then
 fi
 echo ""
 echo "SSH 连接命令："
-echo "  ssh $USERNAME@$LOCAL_IP"
+echo "  本地网络: ssh $USERNAME@$LOCAL_IP"
+echo "  外网访问: ssh -p 2222 $USERNAME@188.253.4.121"
 echo ""
 echo "首次登录后："
 echo "  1. 修改密码: passwd"
