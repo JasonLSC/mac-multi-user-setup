@@ -58,3 +58,8 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 # Node.js (if using nvm)
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+# 代理设置（根据需要启用）
+export https_proxy=http://127.0.0.1:7890
+export http_proxy=http://127.0.0.1:7890
+export all_proxy=socks5://127.0.0.1:7890
