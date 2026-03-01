@@ -1,0 +1,15 @@
+# Example Users Configuration
+# Format: username:api_key
+# Lines starting with # are comments
+
+# Development team
+alice:sk-ant-api03-xxxxx-alice-key
+bob:sk-ant-api03-xxxxx-bob-key
+charlie:sk-ant-api03-xxxxx-charlie-key
+
+# QA team
+# tester1:sk-ant-api03-xxxxx-tester1-key
+# tester2:sk-ant-api03-xxxxx-tester2-key
+
+# Note: Replace xxxxx with actual API keys
+# You can also omit the API key (username only) and configure it later
