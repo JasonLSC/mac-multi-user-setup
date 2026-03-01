@@ -133,12 +133,11 @@ fi
 
 # 7.5. 安装 Claude Code
 print_step "安装 Claude Code..."
-# 尝试使用 curl 安装 Claude Code CLI
-if sudo -u "$USERNAME" bash -c 'curl -fsSL https://raw.githubusercontent.com/anthropics/claude-code/main/install.sh | bash' 2>/dev/null; then
+# 使用官方安装脚本
+if sudo -u "$USERNAME" bash -c 'export https_proxy=http://127.0.0.1:7890 http_proxy=http://127.0.0.1:7890 && curl -fsSL https://claude.ai/install.sh | bash' 2>&1 | grep -q "successfully installed"; then
     print_info "Claude Code 已安装"
 else
-    print_warning "Claude Code 自动安装失败，用户需要手动安装"
-    print_warning "安装方法: curl -fsSL https://raw.githubusercontent.com/anthropics/claude-code/main/install.sh | bash"
+    print_warning "Claude Code 安装可能失败，请手动验证"
 fi
 
 # 8. 设置 Zsh 为默认 shell

@@ -55,6 +55,9 @@ alias gl='git log --oneline --graph'
 # Homebrew
 export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
 
+# Claude Code CLI
+export PATH="$HOME/.local/bin:$PATH"
+
 # Node.js (if using nvm)
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
